@@ -1,0 +1,4 @@
+/* 平滑折叠动画 */
+#sports-container div > div:nth-child(2) {
+  transition: max-height 0.5s ease;
+}

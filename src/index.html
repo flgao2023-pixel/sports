@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Top Athletes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="max-w-7xl mx-auto p-6">
+    <h1 class="text-4xl font-bold mb-6 text-center">Top Athletes Across Sports</h1>
+
+    <!-- 搜索框 -->
+    <div class="mb-6 text-center">
+      <input id="search" type="text" placeholder="Search sports or athletes..."
+        class="p-2 rounded-lg border w-80 shadow focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+
+    <!-- 网格容器 -->
+    <div id="sports-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+  </div>
+
+  <script>
+    let sportsData = [];
+
+    // 注意这里的路径：data.json 在 ../public/
+    fetch("../public/data.json")
+      .then(res => res.json())
+      .then(data => {
+        sportsData = data.sports;
+        renderSports(sportsData);
+      })
+      .catch(err => console.error("Failed to load JSON:", err));
+
+    const container = document.getElementById("sports-container");
+    const searchInput = document.getElementById("search");
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      const filtered = sportsData.filter(sport => 
+        sport.name.toLowerCase().includes(query) ||
+        sport.athletes.some(a => a.name.toLowerCase().includes(query))
+      );
+      renderSports(filtered);
+    });
+
+    function renderSports(sports) {
+      container.innerHTML = "";
+      sports.forEach(sport => {
+        const sportCard = document.createElement("div");
+        sportCard.className = "bg-white rounded-2xl shadow-md p-4 transition hover:shadow-xl";
+
+        const sportHeader = document.createElement("div");
+        sportHeader.className = "flex justify-between items-center cursor-pointer";
+        sportHeader.innerHTML = `
+          <h2 class="text-2xl font-semibold">${sport.name}</h2>
+          <span class="text-gray-500">▼</span>
+        `;
+
+        const athleteList = document.createElement("div");
+        athleteList.className = "mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-hidden transition-all duration-500";
+        athleteList.style.maxHeight = "0px";
+
+        sport.athletes.forEach(a => {
+          const athleteCard = document.createElement("div");
+          athleteCard.className = "bg-gray-50 rounded-xl p-4 flex items-center gap-4 hover:bg-gray-100 transition";
+
+          // 注意头像路径：../avatars/
+          athleteCard.innerHTML = `
+            <img src="../public/${a.avatar}" class="w-12 h-12 rounded-full object-cover" />
+            <div>
+              <h3 class="font-bold">${a.name}</h3>
+              <p class="text-sm text-gray-600">${a.description}</p>
+            </div>
+          `;
+          athleteList.appendChild(athleteCard);
+        });
+
+        sportHeader.addEventListener("click", () => {
+          if (athleteList.style.maxHeight === "0px") {
+            athleteList.style.maxHeight = athleteList.scrollHeight + "px";
+            sportHeader.querySelector("span").textContent = "▲";
+          } else {
+            athleteList.style.maxHeight = "0px";
+            sportHeader.querySelector("span").textContent = "▼";
+          }
+        });
+
+        sportCard.appendChild(sportHeader);
+        sportCard.appendChild(athleteList);
+        container.appendChild(sportCard);
+      });
+    }
+  </script>
+</body>
+</html>

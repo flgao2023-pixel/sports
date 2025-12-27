@@ -1,0 +1,29 @@
+{
+  "sports": [
+    {
+      "name": "Basketball",
+      "athletes": [
+        {
+          "name": "Michael Jordan",
+          "description": "The greatest basketball player of all time.",
+          "avatar": "avatars/mj.png"
+        },
+        {
+          "name": "LeBron James",
+          "description": "Known for his versatility and leadership.",
+          "avatar": "avatars/lebron.png"
+        }
+      ]
+    },
+    {
+      "name": "Soccer",
+      "athletes": [
+        {
+          "name": "Lionel Messi",
+          "description": "Renowned for dribbling and goal-scoring.",
+          "avatar": "avatars/messi.png"
+        }
+      ]
+    }
+  ]
+}
