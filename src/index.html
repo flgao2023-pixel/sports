@@ -24,7 +24,7 @@
     let sportsData = [];
 
     // 注意这里的路径：data.json 在 ../public/
-    fetch("/public/data.json")
+    fetch("public/data.json")
       .then(res => res.json())
       .then(data => {
         sportsData = data.sports;
@@ -67,7 +67,7 @@
 
           // 注意头像路径：../avatars/
           athleteCard.innerHTML = `
-            <img src="/public/${a.avatar}" class="w-12 h-12 rounded-full object-cover" />
+            <img src="public/${a.avatar}" class="w-12 h-12 rounded-full object-cover" />
             <div>
               <h3 class="font-bold">${a.name}</h3>
               <p class="text-sm text-gray-600">${a.description}</p>
