@@ -24,7 +24,7 @@
     let sportsData = [];
 
     // 注意这里的路径：data.json 在 ../public/
-    fetch("../public/data.json")
+    fetch("/data.json")
       .then(res => res.json())
       .then(data => {
         sportsData = data.sports;
